@@ -9,10 +9,10 @@ module.exports = {
   // entry: ['regenerator-runtime/runtime', './students.js', './style.css'],
   context: path.join(basePath, 'src'), // añade src/ a todas las entries
   resolve: {
-    extensions: ['.js', '.jsx']// te ahorra añadir las extensiones en los import de los ficheros .jsx
+    extensions: ['.js', '.ts', '.tsx']// te ahorra añadir las extensiones en los import de los ficheros .jsx
   }, // por ejemplo `import {component } from './fichero` en lugar de fichero.jsx|js
   entry: {
-    app: ['regenerator-runtime/runtime', './students.jsx'],
+    app: ['regenerator-runtime/runtime', './students.tsx'],
     appStyles: './style.scss',
     vendorStyles: ['../node_modules/bootstrap/dist/css/bootstrap.css']
     //vendor: [ 'jquery' ] // no hace falta porq ya esta en el optimization
@@ -33,6 +33,7 @@ module.exports = {
     // filename: 'bundle.js'
     filename: '[name].[chunkhash].js' // se usa para cuando el entry esta estructurado
   },
+  devtool: 'inline-source-map', // crea ficheros .map para poder debugar en chrome
   module: {
     rules: [
       {
@@ -76,6 +77,15 @@ module.exports = {
       {
         test: /.\html$/,
         loader: 'html-loader' // coge las imagenes del html y los mete en el context de la ruta
+      },
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        loader: 'awesome-typescript-loader',
+        options: { // opciones para transpilar de ts a es6 (el loader) y luego babel de es6 a es5
+          useBabel: true,
+          babelCore: '@babel/core' // necesario para babel v7
+        } // cheat: babel 7 lo transpila todo
       }
     ]
   },

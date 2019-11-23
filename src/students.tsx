@@ -7,7 +7,9 @@
 
 // document.write(msg);
 
-import img from './content/js.jpg';
+//import img from './content/js.jpg';
+const img = require('./content/js.jpg'); // asi se carga en ts
+
 import ReactDOM from 'react-dom';
 import React from 'react';
 
