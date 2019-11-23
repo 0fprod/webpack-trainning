@@ -1,12 +1,17 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack'); // son plugins que ya trae webpack x defecto
 const miniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
+
+const basePath = __dirname;
 
 module.exports = {
   //entry: ['regenerator-runtime/runtime', './students.js', './style.css'],
+  context: path.join(basePath, 'src'), // añade src/ a todas las entries
   entry: {
     app: ['regenerator-runtime/runtime', './students.js'],
-    appStyles: './style.css',
+    appStyles: './style.scss',
+    vendorStyles: ['./node_modules/bootstrap/dist/css/bootstrap.css']
     //vendor: [ 'jquery' ] // no hace falta porq ya esta en el optimization
   },
   optimization: {
@@ -42,9 +47,22 @@ module.exports = {
       // }
       { // usamos el minicssextract en lugar de los 2 loaders anteriores, la diferencia es que este lo mete en un fichero css que pesa menos, en lugar de meterlos en un tag en el html
         test: /\.css$/,
-        exclude: /node_modules/,
+        // exclude: /node_modules/, // quitamos el exclude porq añadimos un vendorstyles que está dentro de nodemodules
         use: [miniCssExtractPlugin.loader, 'css-loader']
-
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        use: [
+          miniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass')
+            }
+          }
+        ]
       }
     ]
   },
