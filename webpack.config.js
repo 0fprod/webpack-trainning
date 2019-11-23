@@ -6,12 +6,12 @@ const path = require('path');
 const basePath = __dirname;
 
 module.exports = {
-  //entry: ['regenerator-runtime/runtime', './students.js', './style.css'],
+  // entry: ['regenerator-runtime/runtime', './students.js', './style.css'],
   context: path.join(basePath, 'src'), // añade src/ a todas las entries
   entry: {
     app: ['regenerator-runtime/runtime', './students.js'],
     appStyles: './style.scss',
-    vendorStyles: ['./node_modules/bootstrap/dist/css/bootstrap.css']
+    vendorStyles: ['../node_modules/bootstrap/dist/css/bootstrap.css']
     //vendor: [ 'jquery' ] // no hace falta porq ya esta en el optimization
   },
   optimization: {
@@ -27,7 +27,7 @@ module.exports = {
     }
   },
   output: {
-    //filename: 'bundle.js'
+    // filename: 'bundle.js'
     filename: '[name].[chunkhash].js' // se usa para cuando el entry esta estructurado
   },
   module: {
@@ -63,6 +63,16 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.(jpg|png)$/,
+        exclude: /node_modules/,
+        // loader: 'file-loader' // te la pone aparte la imagen, no va al bundle
+        loader:'url-loader?limit=5000' // si pesa menos de 5k embébelo en el js (entonces lo mete en el bundle), sino la saca de imagen externa
+      },
+      {
+        test: /.\html$/,
+        loader: 'html-loader' // coge las imagenes del html y los mete en el context de la ruta
       }
     ]
   },
