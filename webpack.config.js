@@ -8,8 +8,11 @@ const basePath = __dirname;
 module.exports = {
   // entry: ['regenerator-runtime/runtime', './students.js', './style.css'],
   context: path.join(basePath, 'src'), // añade src/ a todas las entries
+  resolve: {
+    extensions: ['.js', '.jsx']// te ahorra añadir las extensiones en los import de los ficheros .jsx
+  }, // por ejemplo `import {component } from './fichero` en lugar de fichero.jsx|js
   entry: {
-    app: ['regenerator-runtime/runtime', './students.js'],
+    app: ['regenerator-runtime/runtime', './students.jsx'],
     appStyles: './style.scss',
     vendorStyles: ['../node_modules/bootstrap/dist/css/bootstrap.css']
     //vendor: [ 'jquery' ] // no hace falta porq ya esta en el optimization
@@ -33,7 +36,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
       },
@@ -68,7 +71,7 @@ module.exports = {
         test: /\.(jpg|png)$/,
         exclude: /node_modules/,
         // loader: 'file-loader' // te la pone aparte la imagen, no va al bundle
-        loader:'url-loader?limit=5000' // si pesa menos de 5k embébelo en el js (entonces lo mete en el bundle), sino la saca de imagen externa
+        loader: 'url-loader?limit=5000' // si pesa menos de 5k embébelo en el js (entonces lo mete en el bundle), sino la saca de imagen externa
       },
       {
         test: /.\html$/,
