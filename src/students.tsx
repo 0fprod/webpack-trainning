@@ -14,11 +14,13 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 
 import { AverageComponent } from './averageCompoment';
+import { TotalScoreComponent } from './totalScoreComponent';
 
 ReactDOM.render(
   <div>
     <h1>Hello from reactDOM</h1>
     <AverageComponent />
+    <TotalScoreComponent />
   </div>,
   document.getElementById('root')
 )

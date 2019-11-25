@@ -13,7 +13,11 @@ module.exports = {
   }, // por ejemplo `import {component } from './fichero` en lugar de fichero.jsx|js
   entry: {
     app: ['regenerator-runtime/runtime', './students.tsx'],
-    appStyles: './style.scss',
+    appStyles: [
+      './style.scss',
+      // './averageComponentStyles.scss',
+      // './totalScoreComponentStyles.scss'
+    ],
     vendorStyles: ['../node_modules/bootstrap/dist/css/bootstrap.css']
     //vendor: [ 'jquery' ] // no hace falta porq ya esta en el optimization
   },
@@ -33,7 +37,7 @@ module.exports = {
     // filename: 'bundle.js'
     filename: '[name].[chunkhash].js' // se usa para cuando el entry esta estructurado
   },
-  devtool: 'inline-source-map', // crea ficheros .map para poder debugar en chrome
+  // devtool: 'inline-source-map', // crea ficheros .map para poder debugar en chrome
   module: {
     rules: [
       {
@@ -49,25 +53,36 @@ module.exports = {
       //     { loader: 'css-loader' } // extrae todo los contenidos de los .css y los mete en un string dentro del appstyles.js
       //   ]
       // }
-      { // usamos el minicssextract en lugar de los 2 loaders anteriores, la diferencia es que este lo mete en un fichero css que pesa menos, en lugar de meterlos en un tag en el html
-        test: /\.css$/,
-        // exclude: /node_modules/, // quitamos el exclude porq añadimos un vendorstyles que está dentro de nodemodules
-        use: [miniCssExtractPlugin.loader, 'css-loader']
-      },
-      {
-        test: /\.scss$/,
-        exclude: /node_modules/,
-        use: [
-          miniCssExtractPlugin.loader,
-          'css-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              implementation: require('sass')
-            }
-          }
-        ]
-      },
+      // { // usamos el minicssextract en lugar de los 2 loaders anteriores, la diferencia es que este lo mete en un fichero css que pesa menos, en lugar de meterlos en un tag en el html
+      //   test: /\.css$/,
+      //   // exclude: /node_modules/, // quitamos el exclude porq añadimos un vendorstyles que está dentro de nodemodules
+      //   use: [
+      //     miniCssExtractPlugin.loader,
+      //     'css-loader'
+      //   ]
+      // },
+      // {
+      //   test: /\.scss$/,
+      //   exclude: /node_modules/,
+      //   use: [
+      //     miniCssExtractPlugin.loader,
+      //     {
+      //       loader: 'css-loader',
+      //       options: {
+      //         modules: {
+      //           localIdentName: '[name]_[local]_[hash:base64:5]'
+      //         }, // a cada clase de css le pone como prefijo el nombre dl fichero [name], [local] es el nombre de la clase y [hash] un codigo unico
+      //         localsConvention: 'camelCase', // nos permite usar camelcase a la hora de acceder a las classes de un scss en el className
+      //       } // para evitar prefijos y tal, en el css se pone :global(.globalclassname) (+ concatenacion opcional de otra clase)
+      //     },
+      //     {
+      //       loader: 'sass-loader',
+      //       options: {
+      //         implementation: require('sass')
+      //       }
+      //     }
+      //   ]
+      // },
       {
         test: /\.(jpg|png)$/,
         exclude: /node_modules/,
@@ -99,9 +114,9 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery'
     }),
-    new miniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css'
-    })
+    // new miniCssExtractPlugin({
+    //   filename: '[name].css',
+    //   chunkFilename: '[id].css'
+    // })
   ]
 }
